@@ -65,18 +65,18 @@ def associate(map_points: Map, observations: List[Point]) -> List[Tuple[int, int
         tuples, e.g. ``[(0, 12), (3, 5)]`` means that observation 12 was
         generated from map point 0, and observation 5 from map point 3.
     """
-    associations=[] #sara' la lista da ritornare
-    used_indeces=set() #e' l'insieme dei punti gia' usati
+    associations=[]
+    used_indeces=set()
 
     for x in range(len(observations)):
-        obs_pt=observations[x] #e' il punto (x, y) di osservazione
+        obs_pt=observations[x]
         min_dist=float("inf")
         best_map_idx = None
 
         for i in range(len(map_points)):
-            map_pt=map_points[i] #e' il punto (x, y) sulla mappa
+            map_pt=map_points[i]
             if i in used_indeces:
-                pass
+                continue
             distance = math.dist(map_pt, obs_pt)
             if(distance<=min_dist):
                 min_dist=distance
@@ -89,7 +89,7 @@ def associate(map_points: Map, observations: List[Point]) -> List[Tuple[int, int
 
     return associations
 
-    raise NotImplementedError("Step 3 (data association) is yours to implement")
+    #raise NotImplementedError("Step 3 (data association) is yours to implement")
 
 
 # ---------------------------------------------------------------------------
@@ -119,10 +119,10 @@ def correct_map(
         newY=(map_points[map_idx][1] + observations [obs_idx][1])/2.0
         newMap[map_idx]=(newX, newY);
 
-    return newMap;
+    return newMap
 
 
-    raise NotImplementedError("Step 4 (map correction) is yours to implement")
+    #raise NotImplementedError("Step 4 (map correction) is yours to implement")
 
 
 # ---------------------------------------------------------------------------
@@ -150,7 +150,6 @@ def find_path(corrected_map: Map) -> List[int]:
     final_list=[]
     current_pt=corrected_map[0]
     while(len(visited_pt)<len(corrected_map)):
-        #partendo dal nodo zero, devo trovare quello piu' vicino e alla fine impostare il nodo corrente come quello appena trovato
         current_dist=float('inf')
         best_pt=0
         for element in range(len(corrected_map)):
@@ -165,7 +164,7 @@ def find_path(corrected_map: Map) -> List[int]:
         visited_pt.append(best_pt)
         final_list.append(best_pt)
     return final_list
-    raise NotImplementedError("Step 5 (path finding) is yours to implement")
+    #raise NotImplementedError("Step 5 (path finding) is yours to implement")
 
 
 # ---------------------------------------------------------------------------
