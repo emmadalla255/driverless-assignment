@@ -65,6 +65,30 @@ def associate(map_points: Map, observations: List[Point]) -> List[Tuple[int, int
         tuples, e.g. ``[(0, 12), (3, 5)]`` means that observation 12 was
         generated from map point 0, and observation 5 from map point 3.
     """
+    associations=[] #sara' la lista da ritornare
+    used_indeces=set() #e' l'insieme dei punti gia' usati
+
+    for x in range(len(observations)):
+        obs_pt=observations[x] #e' il punto (x, y) di osservazione
+        min_dist=float("inf")
+        best_map_idx = None
+
+        for i in range(len(map_points)):
+            map_pt=map_points[i] #e' il punto (x, y) sulla mappa
+            if i in used_indeces:
+                pass
+            distance = math.dist(map_pt, obs_pt)
+            if(distance<=min_dist):
+                min_dist=distance
+                best_map_idx = i
+
+        if best_map_idx is not None:
+            associations.append((best_map_idx, x))
+            used_indeces.add(best_map_idx)
+                
+
+    return associations
+
     raise NotImplementedError("Step 3 (data association) is yours to implement")
 
 
@@ -88,6 +112,16 @@ def correct_map(
         The corrected map: a list of ``(x, y)`` tuples with the same length
         and the same order as ``map_points``.
     """
+
+    newMap=list(map_points)
+    for map_idx, obs_idx in associations:
+        newX=(map_points[map_idx][0] + observations [obs_idx][0])/2.0
+        newY=(map_points[map_idx][1] + observations [obs_idx][1])/2.0
+        newMap[map_idx]=(newX, newY);
+
+    return newMap;
+
+
     raise NotImplementedError("Step 4 (map correction) is yours to implement")
 
 
@@ -112,6 +146,25 @@ def find_path(corrected_map: Map) -> List[int]:
       arrow (arrows that only touch at a shared node do not count as
       crossings). You can check it visually with ``visualize_path``.
     """
+    visited_pt=[]
+    final_list=[]
+    current_pt=corrected_map[0]
+    while(len(visited_pt)<len(corrected_map)):
+        #partendo dal nodo zero, devo trovare quello piu' vicino e alla fine impostare il nodo corrente come quello appena trovato
+        current_dist=float('inf')
+        best_pt=0
+        for element in range(len(corrected_map)):
+            if(element in visited_pt):
+                continue
+            new_dist=math.dist(current_pt, corrected_map[element])
+            if(new_dist<current_dist):
+                current_dist=new_dist
+                best_pt=element
+        
+        current_pt=corrected_map[best_pt]
+        visited_pt.append(best_pt)
+        final_list.append(best_pt)
+    return final_list
     raise NotImplementedError("Step 5 (path finding) is yours to implement")
 
 
