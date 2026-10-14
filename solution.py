@@ -75,16 +75,14 @@ def associate(map_points: Map, observations: List[Point]) -> List[Tuple[int, int
 
         for i in range(len(map_points)):
             map_pt=map_points[i]
-            if i in used_indeces:
-                continue
-            distance = math.dist(map_pt, obs_pt)
-            if(distance<=min_dist):
-                min_dist=distance
-                best_map_idx = i
+            if i not in used_indeces:
+                distance = math.dist(map_pt, obs_pt)
+                if(distance<=min_dist):
+                    min_dist=distance
+                    best_map_idx = i
 
-        if best_map_idx is not None:
-            associations.append((best_map_idx, x))
-            used_indeces.add(best_map_idx)
+        associations.append((best_map_idx, x))
+        used_indeces.add(best_map_idx)
                 
 
     return associations
@@ -113,13 +111,13 @@ def correct_map(
         and the same order as ``map_points``.
     """
 
-    newMap=list(map_points)
+    new_map=list(map_points)
     for map_idx, obs_idx in associations:
-        newX=(map_points[map_idx][0] + observations [obs_idx][0])/2.0
-        newY=(map_points[map_idx][1] + observations [obs_idx][1])/2.0
-        newMap[map_idx]=(newX, newY);
+        new_X=(map_points[map_idx][0] + observations [obs_idx][0])/2.0
+        new_Y=(map_points[map_idx][1] + observations [obs_idx][1])/2.0
+        new_map[map_idx]=(new_X, new_Y);
 
-    return newMap
+    return new_map
 
 
     #raise NotImplementedError("Step 4 (map correction) is yours to implement")
@@ -153,12 +151,11 @@ def find_path(corrected_map: Map) -> List[int]:
         current_dist=float('inf')
         best_pt=0
         for element in range(len(corrected_map)):
-            if(element in visited_pt):
-                continue
-            new_dist=math.dist(current_pt, corrected_map[element])
-            if(new_dist<current_dist):
-                current_dist=new_dist
-                best_pt=element
+            if(element not in visited_pt):
+                new_dist=math.dist(current_pt, corrected_map[element])
+                if(new_dist<current_dist):
+                    current_dist=new_dist
+                    best_pt=element
         
         current_pt=corrected_map[best_pt]
         visited_pt.append(best_pt)
